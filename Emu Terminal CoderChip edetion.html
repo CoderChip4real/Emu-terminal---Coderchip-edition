@@ -1,0 +1,353 @@
+<html><head><base href="https://emu-terminal.com/">
+<style>
+    body {
+        background-color: #000;
+        color: #ffd700;
+        font-family: 'Courier New', monospace;
+        margin: 0;
+        padding: 20px;
+        transition: background-color 0.5s ease;
+    }
+    #terminal {
+        width: 100%;
+        height: 400px;
+        overflow-y: scroll;
+        border: 1px solid #ffd700;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    #input {
+        width: 100%;
+        background-color: #000;
+        color: #ffd700;;
+        border: 1px solid #ffd700;
+        padding: 5px;
+        margin-top: 10px;
+    }
+    .prompt {
+        color: #ff3333;
+    }
+    .warning {
+        color: #ffff00;
+        font-weight: bold;
+    }
+    .update {
+        color: #00ffff;
+        font-weight: bold;
+    }
+    .success {
+        color: #ffd700;
+    }
+    .error {
+        color: #5a5734;
+    }
+    .royal {
+        color: #ffd700;
+        font-weight: bold;
+    }
+    .cursed {
+        color: #800080;
+        font-style: italic;
+    }
+    .ally {
+        color: #1e90ff;
+        font-weight: bold;
+    }
+    .enemy {
+        color: #ff0000;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    .CoderChip44 {
+        color: #ffd700;
+        font-weight: bold;
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+        font-size: 1.5em;
+    }
+    .god {
+        color: #ffffff;
+        font-weight: bold;
+        text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ffffff;
+        font-size: 1.5em;
+    }
+</style>
+</head>
+<body>
+<h1>EMU Terminal - Coderchip edition</h1>
+<div id="terminal"></div>
+<input type="text" id="input" placeholder="Enter command...">
+
+<script>
+    const terminal = document.getElementById('terminal');
+    const input = document.getElementById('input');
+    const body = document.body;
+
+    let username = '';
+    let rank = '';
+    let isLocked = false;
+
+    const allies = ['rolly', 'frog', 'pingu', 'chocco', 'milky', 'gerald', 'jeff', 'claudette', 'snowie', 'seth', 'ben', 'george', 'ronald', 'fletcher', 'hayden', 'gerald', 'x', 'ollie' , 'coderchip44'];
+    const enemies = ['harlem', 'static', 'ostrich', 'gerald', 'jonny', 'jonathan', 'johnathan', 'xmma', 'clone bean', 'clone emma', 'clone olive', 'red'];
+
+    let commands = {
+        secrets: "do it",
+        v: "m",
+        screwjonnyandgiraffelord : "loo",
+        dpefsdijq44: "hoooo",
+        help: "Displays this help message",
+        status: "Check the current status of the Emu-Ostrich war",
+        worship: "Send worships to Queen Emma or God Conrad",
+        deploy: "Deploy emu troops to a specific location",
+        inventory: "Check the emu army's inventory",
+        train: "Train new emu recruits",
+        spy: "Send emu spies to gather intelligence",
+        fortify: "Strengthen emu defenses",
+        attack: "Launch an attack on ostrich forces",
+        retreat: "Order emu forces to retreat",
+        communicate: "Send a message to allied emu forces",
+        heal: "Heal injured emu soldiers",
+        research: "Conduct research on new emu war technologies",
+        promote: "Promote a deserving emu soldier",
+        map: "View the current war map",
+        resources: "Check available emu resources",
+        construct: "Construct new emu buildings or weapons",
+        sabotage: "Attempt to sabotage ostrich operations",
+        negotiate: "Attempt peace negotiations with ostriches",
+        recruit: "Recruit new emus to the cause",
+        guard: "Set up emu guard patrols",
+        encrypt: "Encrypt emu communications",
+        decrypt: "Decrypt intercepted ostrich messages",
+        camouflage: "Apply camouflage to emu troops or equipment",
+        recon: "Perform reconnaissance on ostrich territory",
+        propaganda: "Spread pro-emu propaganda",
+        trap: "Set traps for ostrich forces",
+        jam: "Jam ostrich communications",
+        hack: "Attempt to hack ostrich computer systems",
+        airlift: "Airlift emu troops or supplies",
+        tunnel: "Dig tunnels for covert emu operations",
+        parade: "Hold a morale-boosting emu parade",
+        scavenge: "Scavenge for supplies in war-torn areas",
+        train_chicks: "Train young emu chicks for future combat",
+        counterintel: "Conduct counterintelligence operations",
+        diplomacy: "Engage in diplomacy with neutral bird species",
+        biochem: "Develop biochemical weapons (for emus only)",
+        weather: "Check weather conditions for battle planning",
+        code: "Develop or upgrade emu military software",
+        logistics: "Manage emu supply lines and resource distribution",
+        check_updates: "Check for terminal updates",
+        message_frontline: "Send messages to emus on the frontlines",
+        clear: "Clear the terminal screen"
+    };
+
+    function displayOutput(text, className = '') {
+        terminal.innerHTML += `<span class="${className}">${text}</span><br>`;
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function processInput(value) {
+        if (!username) {
+            username = value.toLowerCase();
+            if (enemies.includes(username)) {
+                isLocked = true;
+                body.style.backgroundColor = '#330000';
+                displayOutput("Go away.", 'enemy');
+                input.disabled = true;
+                return;
+            }
+            if (username === 'conrad') {
+                rank = 'God';
+                displayOutput(`ALL HAIL GOD CONRAD! Your divine presence blesses us all!`, 'god');
+                body.style.backgroundColor = '#000033'; // A deep blue background for the divine presence
+            } else if (username === 'bean') {
+                rank = 'Prince Bean';
+                displayOutput(`Welcome, ${rank}! Your royal presence honors us.`, 'royal');
+            } else if (username === 'olive') {
+                rank = 'General Olive';
+                displayOutput(`Welcome, ${rank}! The troops await your command.`, 'success');
+            } else if (username === 'gigant') {
+                rank = 'Cursed One - Gigant';
+                displayOutput(`The ${rank} has arrived. The battlefield trembles.`, 'cursed');
+            } else if (username === 'emma') {
+                rank = 'Queen Emma';
+                displayOutput(`Your Majesty, Queen Emma! We are overjoyed by your presence!`, 'royal');
+            } else if (username === 'coderchip44') {
+                rank = 'CoderChip44';
+                displayOutput(`CoderChip welcome welcome! Feel Free to destory the terminal me!`, 'CoderChip44')
+                displayOutput('If you want to redistribute this version of the terminal under a driffent name', 'warning');
+            } else if (allies.includes(username)) {
+                rank = 'Ally';
+                displayOutput(`Welcome, esteemed ally ${value}! Your support is invaluable to our cause.`, 'ally');
+            } else {
+                rank = 'Soldier';
+                displayOutput(`Welcome, brave Emu ${rank} ${value}!`, 'success');
+            }
+            displayOutput('This version of the terminal is only for high ranking emu use. Any emu civilians who use the terminal will be abruptly sent to prison.', 'warning');
+            displayOutput('Type "help" for a list of commands.');
+            input.placeholder = "Enter command...";
+        } else if (!isLocked) {
+            displayOutput(`<span class="prompt">${rank} ${username}></span> ${value}`);
+            const command = value.toLowerCase();
+            if (commands.hasOwnProperty(command)) {
+                executeCommand(command);
+            } else {
+                displayOutput('Unknown command. Type "help" for a list of commands.', 'error');
+            }
+        } else {
+            displayOutput("Go away.", 'enemy');
+        }
+    }
+
+    input.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            processInput(input.value);
+            input.value = '';
+        }
+    });
+
+    function executeCommand(command) {
+        if (isLocked) {
+            displayOutput("Go away.", 'enemy');
+            return;
+        }
+        if (typeof commandImplementations[command] === 'function') {
+            commandImplementations[command]();
+        } else {
+            displayOutput(`Error: Command "${command}" not implemented.`, 'error');
+        }
+    }
+
+    let commandImplementations = {
+        help: () => {
+            displayOutput(`Available commands, ${rank} ${username}:`);
+            for (let cmd in commands) {
+                displayOutput(`${cmd}: ${commands[cmd]}`);
+            }
+        },
+        status: () => displayOutput(`War Status for ${rank} ${username}: The emu forces are currently holding their ground against the ostrich invasion. Our eastern flank has seen heavy fighting, but we've managed to push back their advances in the south.`),
+        worship: () => {
+            if (rank === 'God') {
+                displayOutput(`The entire emu army bows down in reverence to you, God Conrad. Your divine presence fills them with unmatched strength and determination.`, 'god');
+            } else if (username === 'emma') {
+                displayOutput(`${rank} ${username} receives the worship of the emu nation. Long live Queen Emma!`, 'royal');
+            } else {
+                displayOutput(`${rank} ${username} pays respects: All hail Queen Emma and God Conrad! Your majesties, we send our deepest respects and unwavering loyalty. May your feathers always be fluffed and your divine light guide us to victory!`);
+            }
+        },
+        secrets: () => displayoutput(`go to this : https://github.com/CoderChip4real/Emu-terminal---Coderchip-edition`),
+        deploy: () => displayOutput(`${rank} ${username}, emu troops deployed to sector 7G. Awaiting further orders.`, 'success'),
+        v: () => displayOutput(`${rank} ${username}, doodoo.`, 'success'),
+        inventory: () => displayOutput(`Current inventory for ${rank} ${username}: 1000 feather missiles, 500 beak sharpeners, 200 camouflage nets, 5000 rations of bird seed.`),
+        train: () => displayOutput(`Training regimen initiated by ${rank} ${username}. 100 new recruits will be combat-ready in 2 weeks.`, 'success'),
+        spy: () => displayOutput(`Emu spies successfully infiltrated ostrich headquarters under orders from ${rank} ${username}. Awaiting intel.`, 'success'),
+        fortify: () => displayOutput(`Defenses strengthened as per ${rank} ${username}'s orders. Emu-flage activated, trenches deepened, and feather-shields reinforced.`, 'success'),
+        attack: attackCommand,
+        retreat: () => displayOutput(`Retreat order given by ${rank} ${username}. Emu forces falling back to defensive positions.`, 'warning'),
+        communicate: () => displayOutput(`Message sent to allied emu forces from ${rank} ${username}: 'Hold the line, reinforcements incoming!'`, 'success'),
+        heal: () => displayOutput(`Healing stations activated on ${rank} ${username}'s orders. Injured emu soldiers receiving treatment.`, 'success'),
+        research: () => displayOutput(`Research initiated on advanced feather-based weaponry as requested by ${rank} ${username}. Estimated completion: 3 days.`, 'success'),
+        promote: () => displayOutput(`${rank} ${username} has promoted Sergeant Beaky to Lieutenant for exceptional bravery in battle.`, 'success'),
+        map: () => displayOutput(`War map displayed for ${rank} ${username}. Emu territory in green, ostrich in red, contested areas in yellow.`),
+        resources: () => displayOutput(`Available resources for ${rank} ${username}'s forces: 10,000 seeds, 5,000 feathers, 2,000 twigs, 500 shiny objects.`),
+        construct: () => displayOutput(`Construction of new Feather Missile Silo initiated under ${rank} ${username}'s directive. Estimated completion: 5 days.`, 'success'),
+        sabotage: () => displayOutput(`Sabotage mission successful. Ostrich communication towers disabled as per ${rank} ${username}'s plan.`, 'success'),
+        negotiate: () => displayOutput(`Peace negotiations attempted by ${rank} ${username}. Ostriches responded with increased aggression. Negotiations failed.`, 'error'),
+        recruit: () => displayOutput(`Recruitment drive successful under ${rank} ${username}'s leadership. 50 new emus joined our ranks!`, 'success'),
+        guard: () => displayOutput(`Emu guard patrols established around the perimeter on ${rank} ${username}'s orders. Security increased.`, 'success'),
+        encrypt: () => displayOutput(`Emu communications encrypted using advanced Feather Cipher algorithm as requested by ${rank} ${username}.`, 'success'),
+        decrypt: () => displayOutput(`Intercepted ostrich message decrypted for ${rank} ${username}: 'The emus are too powerful. Request immediate backup.'`, 'success'),
+        camouflage: () => displayOutput(`Emu troops and equipment camouflaged under ${rank} ${username}'s directive. Blend-in factor increased by 200%.`, 'success'),
+        recon: () => displayOutput(`Reconnaissance complete as ordered by ${rank} ${username}. Ostrich troop movements mapped and analyzed.`, 'success'),
+        propaganda: () => displayOutput(`Pro-emu propaganda spread on ${rank} ${username}'s orders. Emu morale increased, ostrich morale decreased.`, 'success'),
+        trap: () => displayOutput(`Traps set in sector 9F as per ${rank} ${username}'s strategy. Awaiting ostrich incursion.`, 'success'),
+        jam: () => displayOutput(`Ostrich communications successfully jammed in sectors 3A through 7C on ${rank} ${username}'s command.`, 'success'),
+        hack: () => displayOutput(`Ostrich computer systems breached under ${rank} ${username}'s directive. Downloading classified information...`, 'success'),
+        airlift: () => displayOutput(`Airlift operation successful as planned by ${rank} ${username}. Troops and supplies delivered to forward base.`, 'success'),
+        tunnel: () => displayOutput(`Tunnel network expanded on ${rank} ${username}'s orders. New covert route to ostrich territory established.`, 'success'),
+        parade: () => displayOutput(`Grand Emu Parade held in honor of ${rank} ${username}. Troop morale significantly boosted!`, 'success'),
+        scavenge: () => displayOutput(`Scavenging mission complete as ordered by ${rank} ${username}. Recovered: 200 seeds, 50 twigs, 1 shiny bottlecap.`, 'success'),
+        train_chicks: () => displayOutput(`Chick training program initiated under ${rank} ${username}'s guidance. Future generation of emu warriors in development.`, 'success'),
+        counterintel: () => displayOutput(`Counterintelligence operation successful. Three ostrich spies captured by ${rank} ${username}'s team.`, 'success'),
+        diplomacy: () => displayOutput(`Diplomatic talks with penguin embassy successful under ${rank} ${username}'s leadership. Non-aggression pact signed.`, 'success'),
+        biochem: () => displayOutput(`Biochemical research progressing as directed by ${rank} ${username}. Prototype feather-enhancing serum developed.`, 'success'),
+        weather: () => displayOutput(`Weather forecast for ${rank} ${username}: Sunny with a chance of feather storms. Ideal conditions for emu operations.`, 'success'),
+        code: () => displayOutput(`Military software upgrade complete under ${rank} ${username}'s supervision. Emu battle coordination efficiency increased by 35%.`, 'success'),
+        dpefsdijq44: () => displayOutput(`Coder_Chip44/Beaniest can Nukes enabled under ${rank} ${username}'s supervision. Launching in 10 minutes.`, 'success'),
+        screwjonnyandgiraffelord: () => displayOutput(`ALERT ALERT ALL OF THE EMU ARMY PREPARE TO ATTAK JONATHAN ATKINSON OR GIRAFFE LORD CODER_CHIP44 ALLOWS SUPERVISION. ATTAK THAT BOZO.`, 'success'),
+        logistics: () => displayOutput(`Supply lines optimized by ${rank} ${username}. Resource distribution improved across all emu-controlled territories.`, 'success'),
+        check_updates: checkForUpdates,
+        message_frontline: messageFrontline,
+        clear: clearTerminal
+    };
+
+    function checkForUpdates() {
+        displayOutput(`Checking for updates for ${rank} ${username}...`, 'update');
+        setTimeout(() => {
+            displayOutput(`EMU Terminal is up to date. All systems operational, ${rank} ${username}.`, 'update');
+        }, 1500);
+    }
+
+    function attackCommand() {
+        displayOutput(`Initiating attack sequence for ${rank} ${username}...`);
+        setTimeout(() => {
+            displayOutput(`${rank} ${username}, please select a target:`, 'warning');
+            displayOutput("1. Ostrich Frontline");
+            displayOutput("2. Ostrich Supply Lines");
+            displayOutput("3. Ostrich Command Center");
+            
+            const originalHandler = input.onkeyup;
+            input.onkeyup = function(event) {
+                if (event.key === 'Enter') {
+                    const choice = input.value;
+                    input.value = '';
+                    displayOutput(`<span class="prompt">${rank} ${username}></span> ${choice}`);
+
+                    let result;
+                    switch(choice) {
+                        case '1':
+                            result = `Emu forces under ${rank} ${username}'s leadership have engaged the Ostrich Frontline. Heavy resistance encountered. Casualties reported on both sides. Frontline pushed back by 2 kilometers.`;
+                            break;
+                        case '2':
+                            result = `Surgical strike on Ostrich Supply Lines successful, as planned by ${rank} ${username}. Multiple convoys destroyed. Ostrich forces in disarray due to lack of supplies.`;
+                            break;
+                        case '3':
+                            result = `Assault on Ostrich Command Center initiated by ${rank} ${username}. Heavy defenses encountered. Operation ongoing. Awaiting further reports.`;
+                            break;
+                        default:
+                            result = `Invalid target selection, ${rank} ${username}. Attack aborted.`;
+                    }
+
+                    displayOutput(result, result === `Invalid target selection, ${rank} ${username}. Attack aborted.` ? 'error' : 'success');
+                    input.onkeyup = originalHandler;
+                }
+            };
+        }, 1000);
+    }
+
+    function messageFrontline() {
+        displayOutput(`${rank} ${username}, enter your message for the frontline troops:`, 'warning');
+        
+        const originalHandler = input.onkeyup;
+        input.onkeyup = function(event) {
+            if (event.key === 'Enter') {
+                const message = input.value;
+                input.value = '';
+                displayOutput(`<span class="prompt">${rank} ${username}></span> ${message}`);
+
+                displayOutput(`Message sent to frontline troops from ${rank} ${username}:`, 'success');
+                displayOutput(`"${message}"`, 'success');
+                displayOutput(`Troop morale increased. Emu soldiers stand taller and prouder for ${rank} ${username}!`, 'success');
+
+                input.onkeyup = originalHandler;
+            }
+        };
+    }
+
+    function clearTerminal() {
+        terminal.innerHTML = '';
+        displayOutput(`Terminal cleared. EMU Terminal ready for new commands, ${rank} ${username}.`, 'success');
+    }
+
+    displayOutput('Welcome to the EMU Terminal. Please enter your username:');
+    input.placeholder = "Enter username...";
+</script>
+</body></html>
